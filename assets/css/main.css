@@ -45,7 +45,14 @@ blockquote, q {
 		content: '';
 		content: none;
 	}
-
+.round-image {
+		width: 300px; /* Adjust as needed */
+		height: 300px;
+		border-radius: 50%;
+		object-fit: cover;
+		display: block;
+		margin: 0 auto 15px; /* Centers the image and adds space below */
+	}
 table {
 	border-collapse: collapse;
 	border-spacing: 0;
