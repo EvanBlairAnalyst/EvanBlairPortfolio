@@ -45,6 +45,37 @@ blockquote, q {
 		content: '';
 		content: none;
 	}
+	@keyframes pulse {
+		0% { box-shadow: 0 0 10px rgba(255, 255, 255, 0.2); }
+		50% { box-shadow: 0 0 30px rgba(255, 255, 255, 0.8); }
+		100% { box-shadow: 0 0 10px rgba(255, 255, 255, 0.2); }
+	  }
+	  @keyframes fadeIn {
+		from { opacity: 0; }
+		to { opacity: 1; }
+	  }
+	  .combo:hover {
+		transform: scale(1.5) rotate(360deg);
+		box-shadow: 0px 0px 20px rgba(255, 255, 255, 0.8);
+		transition: all 1.5s ease-in-out;
+	  }
+	  .pop:hover {
+		transform: scale(1.1) translateY(-5px);
+		transition: transform 0.3s ease-in-out;
+	  }
+	  .fade-in {
+		animation: fadeIn 2s ease-in-out;
+	  }  
+	.pulse {
+		animation: pulse 2s infinite;
+	  }
+	.flip {
+		transition: transform 0.6s;
+	  }
+	  
+.flip:hover {
+		transform: rotateY(180deg);
+	  }
 .round-image {
 		width: 300px;
 		height: 300px;
@@ -3405,7 +3436,7 @@ input, select, textarea {
 				}
 
 		#intro h1 {
-			font-size: 5rem;
+			font-size: 3rem;
 			line-height: 1;
 		}
 
@@ -4639,7 +4670,6 @@ input, select, textarea {
 			right: 0;
 			text-align: right;
 			top: 0;
-			vertical-align: middle;
 			width: 7rem;
 		}
 
