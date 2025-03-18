@@ -20,9 +20,59 @@
 				<!-- Intro -->
 				
 					<div id="intro">
+						<img src="images/pic19.PNG" class="round-image pulse fade-in pop">
+					
 						
-						<img src="images/pic19.PNG" class="round-image"><br /> <h1>Evan's Analyst<br /> 
-						Portfolio</h1>
+
+						<div class="typewriter-container">
+							<h1 class="typewriter line1">Evan Blair</h1>
+							<h1 class="typewriter line2">Analyst Portfolio</h1>
+						  </div>
+						  
+						  <style>
+							.typewriter-container {
+							  text-align: center; /* Centers the text */
+							}
+						  
+							.typewriter {
+							  overflow: hidden;
+							  white-space: nowrap;
+							  font-size: 24px;
+							  width: 0;
+							  display: block;
+							  margin: 10px 0; /* Adds space between lines */
+							}
+						  
+							/* First Line */
+							.line1 {
+							  border-right: 3px solid black; /* Cursor */
+							  animation: typing 2s steps(30, end) forwards, removeCursor 0.1s 2s forwards;
+							}
+						  
+							/* Second Line */
+							.line2 {
+							  border-right: 3px solid black; /* Cursor */
+							  visibility: hidden; /* Hide second line initially */
+							  animation: appear 0s 2s forwards, typing 2.5s steps(30, end) 2s forwards, blink 0.6s step-end 4 4.3s, removeCursor 0.1s 6.4s forwards;
+							}
+						  
+							@keyframes appear {
+							  to { visibility: visible; } /* Make second line visible before typing starts */
+							}
+						  
+							@keyframes typing {
+							  from { width: 0; }
+							  to { width: 100%; }
+							}
+						  
+							@keyframes blink {
+							  50% { border-color: transparent; }
+							}
+						  
+							@keyframes removeCursor {
+							  to { border-right: 0px; }
+							}
+						  </style>
 						<p> Aspiring Analyst Proficient in SQL, Tableau, Power BI, Excel, R and Python <a href="https://www.linkedin.com/in/evan-lee-blair/" target="_blank">@evan.blair</a>
 						</p> 
 						<ul class="actions">
