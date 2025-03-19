@@ -40,6 +40,9 @@ ol, ul {
 blockquote, q {
 	quotes: none;
 }
+.container {
+    text-align: center;
+}
 
 	blockquote:before, blockquote:after, q:before, q:after {
 		content: '';
