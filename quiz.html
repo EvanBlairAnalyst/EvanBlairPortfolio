@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finance & Data Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        .quiz-container {
+            width: 60%;
+            margin: 50px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        }
+        .question {
+            font-size: 20px;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        .options {
+            list-style: none;
+            padding: 0;
+        }
+        .options li {
+            margin: 8px 0;
+        }
+        label {
+            font-size: 18px;
+            cursor: pointer;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            cursor: pointer;
+            font-size: 18px;
+            margin-top: 10px;
+            border-radius: 5px;
+            display: block;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #result {
+            font-size: 22px;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+        .incorrect {
+            color: red;
+            font-weight: bold;
+        }
+        .correct {
+            color: green;
+            font-weight: bold;
+        }
+        .home-btn {
+            background-color: #28a745;
+            margin-top: 10px;
+        }
+        .home-btn:hover {
+            background-color: #218838;
+        }
+        /* Bounce Effect */
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-30px);
+            }
+            60% {
+                transform: translateY(-15px);
+            }
+        }
+        .bounce-effect {
+            animation: bounce 1s infinite;
+            color: green;
+            font-size: 24px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <h2>Finance & Data Analysis Quiz</h2>
+    <div id="quiz"></div>
+    <button id="nextBtn" onclick="nextQuestion()" disabled>Next</button>
+    <div id="review"></div>
+</div>
+
+<script>
+    const quizData = [
+        { question: "What does SQL stand for?", options: ["Structured Query Language", "Simple Query Logic", "System Query List", "Sequential Query Language"], answer: "Structured Query Language" },
+        { question: "Which SQL clause filters records based on a condition?", options: ["GROUP BY", "WHERE", "ORDER BY", "HAVING"], answer: "WHERE" },
+        { question: "Which financial statement shows profitability?", options: ["Balance Sheet", "Cash Flow Statement", "Income Statement", "Equity Statement"], answer: "Income Statement" },
+        { question: "What does EBITDA stand for?", options: ["Earnings Before Interest, Taxes, Depreciation, and Amortization", "Earnings Before Income, Tax, Dividend, and Assets", "Equity Before Investment, Taxes, Debt, and Accounting", "Economic Balance Interest, Tax, Dividend, and Assets"], answer: "Earnings Before Interest, Taxes, Depreciation, and Amortization" },
+        { question: "Which tool is commonly used for data visualization?", options: ["Excel", "Power BI", "Tableau", "All of the above"], answer: "All of the above" },
+        { question: "What does ETL stand for?", options: ["Extract, Transform, Load", "Evaluate, Transfer, Learn", "Edit, Test, Launch", "Estimate, Translate, Label"], answer: "Extract, Transform, Load" },
+        { question: "Which SQL function is used to find the highest value in a column?", options: ["MAX()", "MIN()", "AVG()", "COUNT()"], answer: "MAX()" },
+        { question: "What does FIFO stand for in accounting?", options: ["First In, First Out", "Final Input, Final Output", "Financial Inventory Format Order", "Fixed Income Financial Obligation"], answer: "First In, First Out" },
+        { question: "Which metric is used to measure a company's ability to pay short-term obligations?", options: ["Debt Ratio", "Liquidity Ratio", "Current Ratio", "Profit Margin"], answer: "Current Ratio" },
+        { question: "Which SQL JOIN returns only matching rows from both tables?", options: ["INNER JOIN", "LEFT JOIN", "RIGHT JOIN", "FULL JOIN"], answer: "INNER JOIN" },
+        { question: "If you find a $20 bill on the street, what’s the best financial decision?", options: ["Invest it in the stock market", "Buy coffee for the whole office", "Save it in your emergency fund", "Frame it as a reminder of your good luck"], answer: "Invest it in the stock market" },
+        { question: "What’s your reaction when you see a messy dataset?", options: ["Challenge accepted!", "Ugh… let me procrastinate first", "Can I just delete half of it?", "Call IT and hope they fix it"], answer: "Challenge accepted!" },
+        { question: "What is the 'golden rule' of accounting?", options: ["Don’t spend more than you earn", "Debit what comes in, credit what goes out", "Always round up in your favor", "If in doubt, blame Excel!"], answer: "Debit what comes in, credit what goes out" },
+        { question: "If SQL was a superpower, what would it be?", options: ["Time travel (querying historical data)", "Mind reading (extracting insights)", "Cloning (duplicating tables)", "Magic spells (automating queries)"], answer: "Time travel (querying historical data)" },
+        { question: "What’s the most 'finance bro' thing you can say?", options: ["'Buy the dip!'", "'Let's circle back on that.'", "'Have you seen my latest Excel model?'", "'Bitcoin is the future!'"], answer: "'Buy the dip!'"}
+    ];
+
+    let currentQuestionIndex = 0;
+    let score = 0;
+    let userAnswers = [];
+
+    // Function to shuffle the questions
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]]; // Swap elements
+        }
+    }
+
+    shuffleArray(quizData); // Shuffle questions before starting
+
+    function loadQuestion() {
+        let quizContainer = document.getElementById("quiz");
+        let q = quizData[currentQuestionIndex];
+
+        quizContainer.innerHTML = `
+            <div class="question">${currentQuestionIndex + 1}. ${q.question}</div>
+            <ul class="options">
+                ${q.options.map(option => `
+                    <li>
+                        <label>
+                            <input type="radio" name="answer" value="${option}" onclick="enableNext()"> ${option}
+                        </label>
+                    </li>
+                `).join("")}
+            </ul>
+        `;
+
+        document.getElementById("nextBtn").disabled = true;
+    }
+
+    function enableNext() {
+        document.getElementById("nextBtn").disabled = false;
+    }
+
+    function nextQuestion() {
+        let selectedOption = document.querySelector(`input[name="answer"]:checked`);
+        if (selectedOption) {
+            let userAnswer = selectedOption.value;
+            let correctAnswer = quizData[currentQuestionIndex].answer;
+
+            userAnswers.push({ question: quizData[currentQuestionIndex].question, userAnswer, correctAnswer });
+
+            if (userAnswer === correctAnswer) {
+                score++;
+            }
+        }
+
+        currentQuestionIndex++;
+
+        if (currentQuestionIndex < quizData.length) {
+            loadQuestion();
+        } else {
+            showResults();
+        }
+    }
+
+    function showResults() {
+        let resultDiv = document.getElementById("quiz");
+        if (score === quizData.length) {
+            resultDiv.innerHTML = `<h3 class="bounce-effect">Congratulations! You got all the questions right!</h3>`;
+        } else {
+            resultDiv.innerHTML = `<h3>You scored ${score} out of ${quizData.length}!</h3>`;
+        }
+
+        document.getElementById("nextBtn").style.display = "none";
+
+        let reviewContainer = document.getElementById("review");
+        reviewContainer.innerHTML = "<h3>Review Your Answers:</h3>";
+
+        userAnswers.forEach((item, index) => {
+            let colorClass = item.userAnswer === item.correctAnswer ? "correct" : "incorrect";
+            reviewContainer.innerHTML += `
+                <p class="${colorClass}">${index + 1}. ${item.question} <br>
+                Your Answer: ${item.userAnswer} <br>
+                Correct Answer: ${item.correctAnswer}</p>
+            `;
+        });
+
+        reviewContainer.innerHTML += `
+            <button class="home-btn" onclick="goHome()">Home</button>
+            <button class="home-btn" onclick="tryAgain()">Try Again</button>
+        `;
+    }
+
+    function goHome() {
+        window.location.href = "index.html"; // Change this URL to your actual homepage
+    }
+
+    function tryAgain() {
+        score = 0;
+        currentQuestionIndex = 0;
+        userAnswers = [];
+        shuffleArray(quizData); // Shuffle questions again for a new attempt
+        loadQuestion();
+        document.getElementById("nextBtn").style.display = "block";
+        document.getElementById("review").innerHTML = "";
+    }
+
+    // Load the first question
+    loadQuestion();
+</script>
+
+</body>
+</html>
